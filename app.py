@@ -16,7 +16,7 @@ PRODUCT = [
   {
     'id': 3,
     'name': 'Earthworms',
-    'description': 'Earthworms for plants'
+    'description': 'Earthworms for soil'
   }
 ]
 
