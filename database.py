@@ -33,7 +33,12 @@ def load_products_from_db(id):
           return None
       else:
           return row._asdict()  
+        
 
+
+
+    
+      
 
 
 

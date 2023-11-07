@@ -28,6 +28,7 @@ def apply_to_buy(id):
   data = request.form
 
   product = load_products_from_db(id)
+  
   return render_template('application_submitted.html', 
                          application=data,
                         product=product)
