@@ -1,0 +1,60 @@
+from sqlalchemy import create_engine, text
+import os
+
+db_connection_string = os.environ['DB_CONNECTION_STRING']
+
+
+engine = create_engine(
+    db_connection_string,
+    connect_args={
+        "ssl": {
+            "ssl_ca": "/etc/ssl/cert.pem"
+        }
+    }
+)
+
+def load_product_from_db():
+  with engine.connect() as conn:
+    result = conn.execute(text("SELECT * FROM product"))
+
+    productss = []
+    for row in result.all():
+        productss.append(dict(row._asdict()))  # Use row._asdict() to convert to a dictionary
+    return productss
+
+
+def load_products_from_db(id):
+  with engine.connect() as conn:
+      result = conn.execute(
+          text("SELECT * FROM product WHERE id = :val").bindparams(val=id)
+      )
+      row = result.first()  # Get the first row
+      if row is None:
+          return None
+      else:
+          return row._asdict()  # Convert the row to a dictionary
+
+
+
+def add_application_to_db(product_id, data):
+  with engine.connect() as conn:
+      query = text("INSERT INTO applications (product_id, full_name, email, phone_no, Address, House_No) VALUES (:product_id, :full_name, :email, :phone_no, :Address, :House_No)")
+      conn.execute(query, product_id=product_id, full_name=data['full_name'], email=data['email'], phone_no=data['phone_no'], Address=data['Address'], House_No=data['House_No'])
+      conn.execute(query,
+          product_id=product_id,
+          full_name=data.get('full_name'),
+          email=data.get('email'),  # Use .get() to safely access dictionary values
+          phone_no=data.get('phone_no'),
+          Address=data.get('Address'),
+          House_No=data.get('House_No')
+      )
+
+      # conn.execute(query,
+      #     product_id=product_id,
+      #     full_name=data.get('full_name'),
+      #     email=data.get('email'),  # Use .get() to safely access dictionary values
+      #     phone_no=data.get('phone_no'),
+          
+      #     Address=data.get('Address'),
+      #     House_No=data.get('House_No')
+      # )
