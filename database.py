@@ -21,3 +21,15 @@ def load_product_from_db():
     for row in result.all():
         productss.append(dict(row._asdict()))  # Use row._asdict() to convert to a dictionary
     return productss
+
+
+def load_products_from_db(id):
+  with engine.connect() as conn:
+      result = conn.execute(
+          text("SELECT * FROM product WHERE id = :val").bindparams(val=id)
+      )
+      row = result.first()  # Get the first row
+      if row is None:
+          return None
+      else:
+          return row._asdict()  # Convert the row to a dictionary
