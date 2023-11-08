@@ -7,7 +7,7 @@ app = Flask (__name__)
 def hello_world ():
   productss = load_product_from_db()
   return render_template('home.html', products=productss)
-  
+
 @app.route("/api/products")
 def list_products():
   productss = load_product_from_db()
@@ -28,14 +28,12 @@ def apply_to_buy(id):
   data = request.form
 
   product = load_products_from_db(id)
-  
+
   return render_template('application_submitted.html', 
                          application=data,
                         product=product)
-                         
-                         
+
+
 
 if __name__ == '__main__':
   app.run (host='0.0.0.0', debug = True)	
-
-

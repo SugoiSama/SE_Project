@@ -3,7 +3,6 @@ import os
 
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 
-
 engine = create_engine(
     db_connection_string,
     connect_args={
@@ -14,35 +13,21 @@ engine = create_engine(
 )
 
 def load_product_from_db():
-  with engine.connect() as conn:
-    result = conn.execute(text("SELECT * FROM product"))
+    with engine.connect() as conn:
+        result = conn.execute(text("SELECT * FROM product"))
 
-    productss = []
-    for row in result.all():
-        productss.append(dict(row._asdict()))  
-    return productss
-
+        products = []
+        for row in result.all():
+            products.append(dict(row._asdict()))
+        return products
 
 def load_products_from_db(id):
-  with engine.connect() as conn:
-      result = conn.execute(
-          text("SELECT * FROM product WHERE id = :val").bindparams(val=id)
-      )
-      row = result.first()  
-      if row is None:
-          return None
-      else:
-          return row._asdict()  
-        
-
-
-
-    
-      
-
-
-
-
-
-        
-    
+    with engine.connect() as conn:
+        result = conn.execute(
+            text("SELECT * FROM product WHERE id = :val").bindparams(val=id)
+        )
+        row = result.first()
+        if row is None:
+            return None
+        else:
+            return row._asdict()
